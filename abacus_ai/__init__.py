@@ -11,13 +11,15 @@ import json
 import logging
 from typing import Any
 
-from .provider import AbacusAIImageProvider
-
 logger = logging.getLogger(__name__)
 
 
 def register(ctx: Any) -> None:
     """Register the Abacus AI image gen provider and background tools."""
+    # Import provider lazily so tests can import submodules without
+    # requiring the full Hermes agent SDK
+    from .provider import AbacusAIImageProvider  # noqa: PLC0415
+
     # Register the image generation provider
     ctx.register_image_gen_provider(AbacusAIImageProvider())
 

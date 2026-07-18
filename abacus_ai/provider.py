@@ -12,15 +12,27 @@ from typing import Any, Dict, List, Optional
 
 import requests
 
-from agent.image_gen_provider import (
-    DEFAULT_ASPECT_RATIO,
-    ImageGenProvider,
-    error_response,
-    resolve_aspect_ratio,
-    save_b64_image,
-    save_url_image,
-    success_response,
-)
+try:
+    from agent.image_gen_provider import (
+        DEFAULT_ASPECT_RATIO,
+        ImageGenProvider,
+        error_response,
+        resolve_aspect_ratio,
+        save_b64_image,
+        save_url_image,
+        success_response,
+    )
+except ImportError:
+    # Standalone / CI mode — Hermes agent SDK not available.
+    # The provider cannot be used without it, but submodules (models,
+    # utils, config) can still be imported for testing.
+    ImageGenProvider = object  # type: ignore
+    DEFAULT_ASPECT_RATIO = "square"
+    def error_response(**kwargs): return {"status": "error", **kwargs}
+    def success_response(**kwargs): return {"status": "success", **kwargs}
+    def resolve_aspect_ratio(r): return r
+    def save_b64_image(*a, **kw): return ""
+    def save_url_image(*a, **kw): return ""
 
 from .config import resolve_credentials, resolve_model_chain
 from .models import (
