@@ -8,7 +8,10 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from agent.image_gen_provider import resolve_aspect_ratio
+try:
+    from agent.image_gen_provider import resolve_aspect_ratio
+except ImportError:
+    def resolve_aspect_ratio(r: str) -> str: return r
 
 # ---------------------------------------------------------------------------
 # Model-specific aspect ratio formats
