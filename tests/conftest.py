@@ -11,11 +11,6 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-# Ensure the Hermes core is importable
-_HERMES_CORE = Path("/usr/local/lib/hermes-agent")
-if _HERMES_CORE.exists():
-    sys.path.insert(0, str(_HERMES_CORE))
-
 # Add the plugin dir so imports work
 _PLUGIN_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_PLUGIN_DIR))
