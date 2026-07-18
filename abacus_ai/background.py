@@ -20,8 +20,11 @@ logger = logging.getLogger(__name__)
 
 def _jobs_dir() -> Path:
     """Return the directory where background job state is stored."""
-    from hermes_constants import get_hermes_home
-    return get_hermes_home() / "cache" / "abacus_ai_jobs"
+    try:
+        from hermes_constants import get_hermes_home
+        return get_hermes_home() / "cache" / "abacus_ai_jobs"
+    except ImportError:
+        return Path(os.environ.get("HERMES_HOME", os.path.expanduser("~/.hermes"))) / "cache" / "abacus_ai_jobs"
 
 
 def _image_generate_sync(
